@@ -9,7 +9,6 @@ PATH="$HOME/bin:$JAVA_HOME/bin:$GOROOT/bin:$PATH"
 export GOROOT GOPATH JAVA_HOME PATH
 
 
-## make ~/go
 ## make ~/.sh_histdir
 ## move existing files aside
 ## make idempotent (i.e. fix symlinks, if necessary)

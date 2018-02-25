@@ -2,6 +2,10 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+if [[ ! -e ~/go ]]; then
+  mkdir ~/go
+fi
+
 if [[ -e ~/.bash_profile ]]; then
   mv ~/.bash_profile ~/.bash_profile.$$
 fi
