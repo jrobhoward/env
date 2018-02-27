@@ -26,6 +26,11 @@ if [[ -e ~/.gitconfig ]]; then
 fi
 ln -s `realpath .gitconfig` ~/.gitconfig
 
+if [[ -e ~/.vimrc ]]; then
+  mv ~/.vimrc ~/.vimrc.$$
+fi
+ln -s `realpath .vimrc` ~/.vimrc
+
 if [[ ! -e ~/.bash_histdir ]]; then
   mkdir ~/.bash_histdir
 fi
