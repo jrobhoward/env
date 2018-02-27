@@ -25,3 +25,11 @@ if [[ -e ~/.gitconfig ]]; then
   mv ~/.gitconfig ~/.gitconfig.$$
 fi
 ln -s `realpath .gitconfig` ~/.gitconfig
+
+if [[ ! -e ~/.bash_histdir ]]; then
+  mkdir ~/.bash_histdir
+fi
+
+if [[ ! -e ~/tmp ]]; then
+  mkdir ~/tmp
+fi

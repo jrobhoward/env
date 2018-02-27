@@ -4,20 +4,31 @@ case $- in
       *) return;;
 esac
 
-# don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
-HISTCONTROL=ignoreboth
-
-# append to the history file, don't overwrite it
+## setup history
+export HISTCONTROL=ignoredups:erasedups  
 shopt -s histappend
-
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
-
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
 shopt -s checkwinsize
+export HISTSIZE=10000
+export HISTFILESIZE=10000
+
+MY_TPANE=`echo "$TMUX_PANE" | cut -d '%' -f 2`
+if [[ ! -z "$MY_TPANE" ]]; then
+  if [[ -d "/home/jhoward/.bash_histdir" ]]; then
+    MY_TSESSION=`tmux display-message -p '#S'`
+    export HISTFILE="/home/jhoward/.bash_histdir/history.$MY_TSESSION.$MY_TPANE"
+    if [[ ! -f "$HISTFILE" ]]; then
+      touch "$HISTFILE"
+    fi
+  fi
+else
+  MY_TTY=`tty | sed -e "s:/dev/::" | tr "\/" "_"`
+  if [[ ! -z "$MY_TTY" ]]; then
+    export HISTFILE="/home/jhoward/.bash_histdir/history.$MY_TTY"
+    if [[ ! -f "$HISTFILE" ]]; then
+      touch "$HISTFILE"
+    fi
+  fi
+fi
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -50,22 +61,26 @@ esac
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
     alias dir='dir --color=auto'
-    alias vdir='vdir --color=auto'
-
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias grep='grep --color=auto'
+    alias ls='ls --color=auto'
+    alias vdir='vdir --color=auto'
 fi
 
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # some more ls aliases
-alias ll='ls -alF'
+alias cdgit="cd ~/git"
+alias cdnotes="cd ~/notes"
+alias findp="find . -path ./.git -prune -o "
 alias la='ls -A'
+alias ll='ls -alF'
 alias l='ls -CF'
+alias lsd="ls -d */ | tr \"\n\" \" \""
+
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile

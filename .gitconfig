@@ -1,5 +1,5 @@
 [user]
-	name = jrobhoward
+	name = James Howard
 	email = jrobhoward@gmail.com
 [alias]
 	b = branch
@@ -9,6 +9,7 @@
 	lgad = log --pretty=format:"%h%x09%an%x09%ad%x09%s"
 	m = merge
 	p = pull --rebase
+	cloneshallow = clone --depth 1
 	cleanrepo = clean -f -d
 	reallycleanrepo = clean -f -d -x
 	resethead = reset --hard HEAD
@@ -17,6 +18,9 @@
 	lg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
 	lg = !"git lg1"
 	tagdates = log --tags --simplify-by-decoration --pretty='format:%ai %d'
+	whatadded = log --diff-filter=A
+	oldest-ancestor = !zsh -c 'diff -u <(git rev-list --first-parent "${1:-master}") <(git rev-list --first-parent "${2:-HEAD}") | sed -ne \"s/^ //p\" | head -1' -
+	diverges = !sh -c 'git rev-list --boundary $1...$2 | grep "^-" | cut -c2-'
 [color]
 	diff = true
 	branch = true
@@ -25,15 +29,32 @@
 [color "diff"]
 	whitespace = red reverse
 [core]
-	editor = vim
-	whitespace = cr-at-eol
-	packedGitLimit = 128m
-	packedGitWindowSize = 128m
+	editor = /usr/bin/vim
+	#packedGitLimit = 128m
+	#packedGitWindowSize = 128m
 [pack]
-	deltaCacheSize = 128m
-	packSizeLimit = 128m
-	windowMemory = 128m
+	## threads 1
+	## defaultCacheSize
+	## packedGitWindowSize
+	## packedGitLimit
+	## windowMemory
+	#deltaCacheSize = 128m
+	#packSizeLimit = 128m
+	#windowMemory = 128m
 [rebase]
 	stat = true
 [push]
-	default = simple
+	default = upstream
+[diff]
+	tool = bc3
+	renamelimit = 5000
+[difftool "bc3"]
+	trustExitCode = true
+[merge]
+	tool = bc3
+[mergetool "bc3"]
+	trustExitCode = true
+[difftool "bc3"]
+	trustExitCode = true
+[difftool]
+	prompt = false
