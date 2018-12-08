@@ -80,6 +80,7 @@ alias la='ls -A'
 alias ll='ls -alF'
 alias l='ls -CF'
 alias lsd="ls -d */ | tr \"\n\" \" \""
+alias hgrep="find ~/.bash_histdir/ -type f | xargs ls -rt | xargs grep "
 
 
 # enable programmable completion features (you don't need to enable
